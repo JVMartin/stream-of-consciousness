@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "dotenv": "^16.0.0",
     "prettier": "^2.6.2",
     "ts-node": "^10.7.0",
     "tslint": "^6.1.3",
