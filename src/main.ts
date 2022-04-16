@@ -10,6 +10,4 @@ import { TwitterService } from './services/twitter.service';
 
   logger.info('Starting up');
   twitterService.flood();
-})().catch((e) => {
-  throw e;
-});
+})();
