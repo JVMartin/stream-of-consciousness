@@ -4,7 +4,7 @@ type NodeEnv = 'production' | 'development' | 'test';
 
 const NODE_ENV = 'NODE_ENV';
 const LOG_LEVEL = 'LOG_LEVEL';
-const TWITTER_API_KEY = 'TWITTER_API_KEY';
+const TWITTER_BEARER_TOKEN = 'TWITTER_BEARER_TOKEN';
 
 export class ConfigService {
   public readonly nodeEnv: NodeEnv;
@@ -14,7 +14,7 @@ export class ConfigService {
    */
   public readonly logLevel: Level;
 
-  public readonly twitterApiKey: string;
+  public readonly twitterBearerToken: string;
 
   constructor() {
     if (process.env[NODE_ENV] !== 'test') {
@@ -52,11 +52,11 @@ export class ConfigService {
      */
     // We can safely cast these to strings because we already called
     // checkRequiredVars();
-    this.twitterApiKey = process.env[TWITTER_API_KEY] as string;
+    this.twitterBearerToken = process.env[TWITTER_BEARER_TOKEN] as string;
   }
 
   private checkRequiredVars(): void {
-    const requiredVars: string[] = [TWITTER_API_KEY];
+    const requiredVars: string[] = [TWITTER_BEARER_TOKEN];
 
     const missingVars = requiredVars.reduce((vars: string[], v: string) => {
       if (!process.env[v]) {
