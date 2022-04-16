@@ -38,8 +38,8 @@ export class TwitterService {
       {
         add: [
           {
-            value: 'cat has:images',
-            tag: 'cat pictures',
+            value: 'ukraine has:images',
+            tag: 'ukraine related pictures',
           },
         ],
       },
