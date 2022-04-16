@@ -9,5 +9,10 @@ import { TwitterService } from './services/twitter.service';
   const twitterService = new TwitterService(configService, logger);
 
   logger.info('Starting up');
+  const rules = await twitterService.getRules();
+  await twitterService.deleteRules(rules);
+  await twitterService.setRules();
   twitterService.flood();
-})();
+})().catch((e) => {
+  console.log(JSON.stringify(e));
+});
