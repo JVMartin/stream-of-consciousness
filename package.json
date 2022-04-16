@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/main.ts",
   "scripts": {
-    "start": "node -r ts-node/register src/main.ts"
+    "start": "node -r ts-node/register -r dotenv/config src/main.ts"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
     "ts-node": "^10.7.0",
     "tslint": "^6.1.3",
     "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "pino": "^7.10.0"
   }
 }
