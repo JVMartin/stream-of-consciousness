@@ -94,7 +94,7 @@ export class TwitterService {
   public flood() {
     this.logger.info(this.flood.name);
 
-    const url = `${this.searchUrl}?expansions=attachments.media_keys&tweet.fields=text,attachments&media.fields=url`;
+    const url = `${this.searchUrl}?expansions=attachments.media_keys&tweet.fields=text&media.fields=url`;
 
     const stream = needle.get(url, {
       headers: {
@@ -105,13 +105,17 @@ export class TwitterService {
       timeout: 20 * 1000,
     });
 
+    let consecutiveErrors = 0;
     stream.on('data', (data) => {
       try {
         const tweet = JSON.parse(data);
         this.logger.info({ tweet }, 'Tweet');
+        consecutiveErrors = 0;
       } catch (e) {
         this.logger.error({ data }, e.message);
-        process.exit(1);
+        if (++consecutiveErrors > 10) {
+          process.exit(1);
+        }
       }
     });
   }
