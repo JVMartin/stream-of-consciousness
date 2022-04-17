@@ -114,7 +114,7 @@ export class TwitterService {
     stream.on('data', (data) => {
       try {
         const tweet = JSON.parse(data);
-        this.logger.info({ tweet }, 'Tweet');
+        // this.logger.info({ tweet }, 'Tweet');
         const images = tweet?.includes?.media.filter(x => x.type === 'photo').map(x => x.url);
         this.serverService.eventEmitter.emit('image', images[0]);
         consecutiveErrors = 0;

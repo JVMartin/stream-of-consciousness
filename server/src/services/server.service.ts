@@ -18,6 +18,8 @@ export class ServerService {
     const app = express();
     app.use(cors());
 
+    let i = 0;
+
     app.get('/image', (req, res) => {
       res.writeHead(200, {
         Connection: 'keep-alive',
@@ -25,9 +27,21 @@ export class ServerService {
         'Cache-Control': 'no-cache',
       });
 
-      this.eventEmitter.on('image', (image) => {
+      const num = ++i;
+
+      this.logger.info(`ADD ${num}`);
+
+      const listener = (image) => {
+        this.logger.info(`EMIT ${num} ${image}`);
         res.write(`data:${JSON.stringify({ image })}`);
         res.write(`\n\n`);
+      };
+
+      const handle = this.eventEmitter.on('image', listener);
+
+      req.on('close', () => {
+        this.logger.info(`REMOVE ${num}`);
+        handle.removeListener('image', listener);
       });
     });
 
