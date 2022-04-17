@@ -1,6 +1,7 @@
 import { Logger } from 'pino';
+import { ImageDto } from '../types/image.dto';
 
-export class ImageCollectionService {
+export class ImageDtoCollectionService {
   private static MAX_LENGTH: number = 500;
 
   /**
@@ -11,31 +12,33 @@ export class ImageCollectionService {
   /**
    * Array is our FIFO queue
    */
-  private readonly queue: string[];
+  private readonly queue: ImageDto[];
 
   constructor(private readonly logger: Logger) {
     this.map = new Map<string, boolean>();
     this.queue = [];
   }
 
-  public add(image: string) {
-    if (this.map.has(image)) {
+  public add(image: ImageDto) {
+    if (this.map.has(image.url)) {
       return false;
     }
-    if (this.queue.length >= ImageCollectionService.MAX_LENGTH) {
+    if (this.queue.length >= ImageDtoCollectionService.MAX_LENGTH) {
       return false;
     }
 
     this.logger.trace(`Adding image ${image}`);
-    this.map.set(image, true);
+    this.map.set(image.url, true);
     this.queue.push(image);
   }
 
-  public remove(): string {
+  public remove(): ImageDto {
     const image = this.queue.shift();
+
     if (image) {
-      this.map.delete(image);
+      this.map.delete(image.url);
     }
+
     return image;
   }
 

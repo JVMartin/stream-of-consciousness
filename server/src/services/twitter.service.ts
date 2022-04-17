@@ -2,6 +2,7 @@ import * as needle from 'needle';
 import { Logger } from 'pino';
 
 import { ConfigService } from './config.service';
+import { ImageDto } from '../types/image.dto';
 
 export class TwitterService {
   private readonly userAgent: string =
@@ -90,10 +91,10 @@ export class TwitterService {
     return response.body;
   }
 
-  public streamSearchImages(cb: (image: string) => any) {
+  public streamSearchImages(cb: (image: ImageDto) => any) {
     this.logger.info(this.streamSearchImages.name);
 
-    const url = `${this.searchUrl}?expansions=attachments.media_keys&tweet.fields=text&media.fields=url`;
+    const url = `${this.searchUrl}?expansions=attachments.media_keys,author_id&tweet.fields=text&media.fields=url&user.fields=username`;
 
     let consecutiveErrors = 0;
 
@@ -107,10 +108,13 @@ export class TwitterService {
     }).on('data', (data) => {
       try {
         const tweet = JSON.parse(data);
-        // this.logger.info({ tweet }, 'Tweet');
-        const images = tweet?.includes?.media.filter((x) => x.type === 'photo').map((x) => x.url);
-        for (const image of images) {
-          cb(image);
+        const imageUrls = tweet?.includes?.media.filter((x) => x.type === 'photo').map((x) => x.url);
+        for (const image of imageUrls) {
+          cb({
+            url: image,
+            tweet: tweet.data.text,
+            tweetUrl: `https://twitter.com/${tweet.includes.users[0].username}/status/${tweet.data.id}`,
+          });
         }
         consecutiveErrors = 0;
       } catch (e) {

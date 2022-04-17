@@ -33,7 +33,7 @@ export class ServerService {
 
       const listener = (image) => {
         this.logger.trace(`EMIT ${num} ${image}`);
-        res.write(`data:${JSON.stringify({ image })}`);
+        res.write(`data:${JSON.stringify(image)}`);
         res.write(`\n\n`);
       };
 

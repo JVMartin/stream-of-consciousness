@@ -1,31 +1,56 @@
 import { useEffect, useState } from 'react';
 
+import { ImageDto } from '../../server/src/types/image.dto';
+
 export default function App() {
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState<ImageDto>({ url: '', tweetUrl: '', tweet: ''});
+  const [paused, setPaused] = useState<boolean>(false);
+
+
+  function buttonClick() {
+    if (paused) {
+      setPaused(false);
+    } else {
+      setPaused(true);
+    }
+  }
 
   useEffect(() => {
-    const eventSource = new EventSource(`http://localhost:8080/image`);
-    console.log('hello');
-    eventSource.onmessage = (e) => {
-      const data = JSON.parse(e.data);
-      setImage(data.image);
-    };
-    return () => {
-      eventSource.close();
-    };
-  }, [])
+    if (paused) {
+      return () => {};
+    } else {
+      const eventSource = new EventSource(`http://localhost:8080/image`);
+      eventSource.onmessage = (e) => {
+        const data: ImageDto = JSON.parse(e.data);
+        setImage(data);
+      };
+      return () => {
+        eventSource.close();
+      };
+    }
+  }, [paused])
 
   let imageArea;
-  if (image && image.length) {
-    imageArea = <img src={image} className="mx-auto" />;
+  if (image && image.url.length) {
+    imageArea = <img src={image.url} className="mx-auto" />;
   } else {
     imageArea = <p>Waiting for first image...</p>;
   }
 
   return <div className="App">
     <section className="py-5">
-      <div className="container mx-auto max-w-2xl">
-        {imageArea}
+      <div className="container mx-auto max-w-2xl flex items-center">
+        <button onClick={buttonClick} className="mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          {paused ? 'Resume' : 'Pause'}
+        </button>
+      </div>
+      <div className="py-5 container mx-auto max-w-2xl">
+        <div>
+          {imageArea}
+        </div>
+        <div>
+          <p>{image.tweet}</p>
+        </div>
       </div>
     </section>
   </div>;

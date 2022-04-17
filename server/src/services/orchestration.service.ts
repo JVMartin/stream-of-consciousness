@@ -1,7 +1,7 @@
 import { Logger } from 'pino';
 
 import { ConfigService } from './config.service';
-import { ImageCollectionService } from './image-collection.service';
+import { ImageDtoCollectionService } from './image-dto-collection.service';
 import { ServerService } from './server.service';
 import { TwitterService } from './twitter.service';
 
@@ -11,7 +11,7 @@ export class OrchestrationService {
     private readonly logger: Logger,
     private readonly twitterService: TwitterService,
     private readonly serverService: ServerService,
-    private readonly imageCollectionService: ImageCollectionService,
+    private readonly imageCollectionService: ImageDtoCollectionService,
   ) {}
 
   public async run() {
@@ -33,11 +33,16 @@ export class OrchestrationService {
     // Every N seconds, grab an image from the collection and
     // emit it via the server's imageEmitter.
     setInterval(() => {
+      // No need to emit if there are no listeners
+      if (!this.serverService.imageEmitter.listenerCount('image')) {
+        return;
+      }
+
       const image = this.imageCollectionService.remove();
       if (image) {
         this.logger.info(`Emitting image ${image} (${this.imageCollectionService.size()} remaining)`);
         this.serverService.imageEmitter.emit('image', image);
       }
-    }, 1000);
+    }, 1500);
   }
 }
