@@ -6,15 +6,6 @@ export default function App() {
   const [image, setImage] = useState<ImageDto>({ url: '', tweetUrl: '', tweet: ''});
   const [paused, setPaused] = useState<boolean>(false);
 
-
-  function buttonClick() {
-    if (paused) {
-      setPaused(false);
-    } else {
-      setPaused(true);
-    }
-  }
-
   useEffect(() => {
     if (paused) {
       return () => {};
@@ -40,7 +31,7 @@ export default function App() {
   let pauseButton = null;
   if (image && image.url.length) {
     pauseButton =
-      <button onClick={buttonClick} className="mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      <button onClick={() => setPaused(!paused)} className="mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         {paused ? 'Resume' : 'Pause'}
       </button>
   }
