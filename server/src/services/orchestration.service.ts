@@ -30,6 +30,8 @@ export class OrchestrationService {
       this.imageCollectionService.add(image);
     });
 
+    // Every N seconds, grab an image from the collection and
+    // emit it via the server's imageEmitter.
     setInterval(() => {
       const image = this.imageCollectionService.remove();
       if (image) {
