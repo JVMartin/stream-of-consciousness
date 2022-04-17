@@ -95,17 +95,16 @@ export class TwitterService {
 
     const url = `${this.searchUrl}?expansions=attachments.media_keys&tweet.fields=text&media.fields=url`;
 
-    const stream = needle.get(url, {
+    let consecutiveErrors = 0;
+
+    needle.get(url, {
       headers: {
         'User-Agent': this.userAgent,
         Authorization: `Bearer ${this.configService.twitterBearerToken}`,
       },
 
       timeout: 20 * 1000,
-    });
-
-    let consecutiveErrors = 0;
-    stream.on('data', (data) => {
+    }).on('data', (data) => {
       try {
         const tweet = JSON.parse(data);
         // this.logger.info({ tweet }, 'Tweet');
