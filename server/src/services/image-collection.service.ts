@@ -1,4 +1,6 @@
 export class ImageCollectionService {
+  private static MAX_LENGTH: number = 500;
+
   /**
    * Map allows for hyper-fast lookups with no array search
    */
@@ -18,7 +20,7 @@ export class ImageCollectionService {
     if (this.map.has(image)) {
       return false;
     }
-    if (this.queue.length > 100) {
+    if (this.queue.length >= ImageCollectionService.MAX_LENGTH) {
       return false;
     }
 
