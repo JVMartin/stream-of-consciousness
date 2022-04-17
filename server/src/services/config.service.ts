@@ -2,12 +2,15 @@ import { Level } from 'pino';
 
 type NodeEnv = 'production' | 'development' | 'test';
 
+const PORT = 'PORT';
 const NODE_ENV = 'NODE_ENV';
 const LOG_LEVEL = 'LOG_LEVEL';
 const LOAD_RULES = 'LOAD_RULES';
 const TWITTER_BEARER_TOKEN = 'TWITTER_BEARER_TOKEN';
 
 export class ConfigService {
+  public readonly port: number;
+
   public readonly nodeEnv: NodeEnv;
 
   /**
@@ -47,6 +50,7 @@ export class ConfigService {
     } else {
       this.logLevel = 'info';
     }
+    this.port = Number(process.env[PORT]) || 80;
     this.loadRules = `${process.env[LOAD_RULES]}`.toLowerCase()[0] !== 'f';
 
     /**
