@@ -2,7 +2,6 @@ import * as needle from 'needle';
 import { Logger } from 'pino';
 
 import { ConfigService } from './config.service';
-import { ServerService } from './server.service';
 
 export class TwitterService {
   private readonly userAgent: string =
@@ -13,7 +12,6 @@ export class TwitterService {
   constructor(
     private readonly configService: ConfigService,
     private readonly logger: Logger,
-    private readonly serverService: ServerService,
   ) {}
 
   public async getRules(): Promise<any> {
@@ -95,8 +93,8 @@ export class TwitterService {
     return response.body;
   }
 
-  public flood() {
-    this.logger.info(this.flood.name);
+  public streamSearchImages(cb: (image: string) => any) {
+    this.logger.info(this.streamSearchImages.name);
 
     const url = `${this.searchUrl}?expansions=attachments.media_keys&tweet.fields=text&media.fields=url`;
 
@@ -110,13 +108,14 @@ export class TwitterService {
     });
 
     let consecutiveErrors = 0;
-    let lastEmit = 0;
     stream.on('data', (data) => {
       try {
         const tweet = JSON.parse(data);
         // this.logger.info({ tweet }, 'Tweet');
         const images = tweet?.includes?.media.filter(x => x.type === 'photo').map(x => x.url);
-        this.serverService.eventEmitter.emit('image', images[0]);
+        for (const image of images) {
+          cb(image);
+        }
         consecutiveErrors = 0;
       } catch (e) {
         this.logger.error({ data }, e.message);

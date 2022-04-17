@@ -5,16 +5,18 @@ import { Logger } from 'pino';
 import { EventEmitter } from 'events';
 
 export class ServerService {
-  public eventEmitter: EventEmitter;
+  public imageEmitter: EventEmitter;
 
   constructor(
     private readonly configService: ConfigService,
     private readonly logger: Logger,
   ) {
-    this.eventEmitter = new EventEmitter();
+    this.imageEmitter = new EventEmitter();
   }
 
   public run(): any {
+    this.logger.trace('Initializing express server');
+
     const app = express();
     app.use(cors());
 
@@ -32,12 +34,12 @@ export class ServerService {
       this.logger.info(`ADD ${num}`);
 
       const listener = (image) => {
-        this.logger.info(`EMIT ${num} ${image}`);
+        this.logger.trace(`EMIT ${num} ${image}`);
         res.write(`data:${JSON.stringify({ image })}`);
         res.write(`\n\n`);
       };
 
-      const handle = this.eventEmitter.on('image', listener);
+      const handle = this.imageEmitter.on('image', listener);
 
       req.on('close', () => {
         this.logger.info(`REMOVE ${num}`);
