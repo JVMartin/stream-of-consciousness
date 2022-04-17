@@ -9,10 +9,7 @@ export class TwitterService {
   private readonly rulesUrl: string = 'https://api.twitter.com/2/tweets/search/stream/rules';
   private readonly searchUrl: string = 'https://api.twitter.com/2/tweets/search/stream';
 
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly logger: Logger,
-  ) {}
+  constructor(private readonly configService: ConfigService, private readonly logger: Logger) {}
 
   public async getRules(): Promise<any> {
     this.logger.info(this.getRules.name);
@@ -112,7 +109,7 @@ export class TwitterService {
       try {
         const tweet = JSON.parse(data);
         // this.logger.info({ tweet }, 'Tweet');
-        const images = tweet?.includes?.media.filter(x => x.type === 'photo').map(x => x.url);
+        const images = tweet?.includes?.media.filter((x) => x.type === 'photo').map((x) => x.url);
         for (const image of images) {
           cb(image);
         }

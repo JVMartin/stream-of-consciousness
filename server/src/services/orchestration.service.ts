@@ -1,8 +1,9 @@
-import { ConfigService } from './config.service';
 import { Logger } from 'pino';
+
+import { ConfigService } from './config.service';
 import { ImageCollectionService } from './image-collection.service';
-import { TwitterService } from './twitter.service';
 import { ServerService } from './server.service';
+import { TwitterService } from './twitter.service';
 
 export class OrchestrationService {
   constructor(
@@ -11,8 +12,7 @@ export class OrchestrationService {
     private readonly twitterService: TwitterService,
     private readonly serverService: ServerService,
     private readonly imageCollectionService: ImageCollectionService,
-  ) {
-  }
+  ) {}
 
   public async run() {
     this.logger.info('Starting up');

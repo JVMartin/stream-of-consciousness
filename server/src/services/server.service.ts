@@ -1,16 +1,14 @@
-import { ConfigService } from './config.service';
-import * as express from 'express';
 import * as cors from 'cors';
-import { Logger } from 'pino';
 import { EventEmitter } from 'events';
+import * as express from 'express';
+import { Logger } from 'pino';
+
+import { ConfigService } from './config.service';
 
 export class ServerService {
   public imageEmitter: EventEmitter;
 
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly logger: Logger,
-  ) {
+  constructor(private readonly configService: ConfigService, private readonly logger: Logger) {
     this.imageEmitter = new EventEmitter();
   }
 

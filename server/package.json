@@ -5,7 +5,11 @@
   "main": "src/main.ts",
   "scripts": {
     "start": "node -r ts-node/register -r dotenv/config src/main.ts",
-    "client": "vite"
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "lint-fix": "npm run lint -- --fix",
+    "prettier": "prettier '**/*.ts' '**/*.json' '!data/**'",
+    "prettier-write": "npm run prettier -- --write",
+    "prettier-check": "npm run prettier -- --check"
   },
   "repository": {
     "type": "git",
