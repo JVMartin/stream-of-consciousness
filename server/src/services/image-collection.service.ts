@@ -35,4 +35,8 @@ export class ImageCollectionService {
     }
     return image;
   }
+
+  public size(): number {
+    return this.queue.length;
+  }
 }

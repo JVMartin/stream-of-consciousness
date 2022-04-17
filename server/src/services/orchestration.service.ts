@@ -35,7 +35,7 @@ export class OrchestrationService {
     setInterval(() => {
       const image = this.imageCollectionService.remove();
       if (image) {
-        this.logger.trace(`Emitting image ${image}`);
+        this.logger.trace(`Emitting image ${image} (${this.imageCollectionService.size()} remaining)`);
         this.serverService.imageEmitter.emit('image', image);
       }
     }, 2000);
