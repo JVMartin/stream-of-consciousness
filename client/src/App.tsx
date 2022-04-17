@@ -49,7 +49,11 @@ export default function App() {
           {imageArea}
         </div>
         <div>
-          <p>{image.tweet}</p>
+          <p>
+            {image.tweet}
+            &nbsp;
+            {image.tweetUrl ? (<a href={image.tweetUrl} target="_blank">Link</a>) : null}
+          </p>
         </div>
       </div>
     </section>
