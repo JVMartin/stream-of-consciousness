@@ -6,6 +6,7 @@ const PORT = 'PORT';
 const NODE_ENV = 'NODE_ENV';
 const LOG_LEVEL = 'LOG_LEVEL';
 const LOAD_RULES = 'LOAD_RULES';
+const TWITTER_TAGS = 'TWITTER_TAGS';
 const TWITTER_BEARER_TOKEN = 'TWITTER_BEARER_TOKEN';
 
 export class ConfigService {
@@ -20,6 +21,7 @@ export class ConfigService {
 
   public readonly loadRules: boolean;
 
+  public readonly twitterTags: string;
   public readonly twitterBearerToken: string;
 
   constructor() {
@@ -60,11 +62,12 @@ export class ConfigService {
      */
     // We can safely cast these to strings because we already called
     // checkRequiredVars();
+    this.twitterTags = process.env[TWITTER_TAGS] as string;
     this.twitterBearerToken = process.env[TWITTER_BEARER_TOKEN] as string;
   }
 
   private checkRequiredVars(): void {
-    const requiredVars: string[] = [TWITTER_BEARER_TOKEN];
+    const requiredVars: string[] = [TWITTER_TAGS, TWITTER_BEARER_TOKEN];
 
     const missingVars = requiredVars.reduce((vars: string[], v: string) => {
       if (!process.env[v]) {
