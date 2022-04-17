@@ -16,6 +16,8 @@ export default function App() {
   }, [])
 
   return <div className="App">
-    <p>{image}</p>
+    <div>
+      <img src={image} />
+    </div>
   </div>;
 }

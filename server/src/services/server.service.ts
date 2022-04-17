@@ -2,12 +2,17 @@ import { ConfigService } from './config.service';
 import * as express from 'express';
 import * as cors from 'cors';
 import { Logger } from 'pino';
+import { EventEmitter } from 'events';
 
 export class ServerService {
+  public eventEmitter: EventEmitter;
+
   constructor(
     private readonly configService: ConfigService,
     private readonly logger: Logger,
-  ) {}
+  ) {
+    this.eventEmitter = new EventEmitter();
+  }
 
   public run(): any {
     const app = express();
@@ -20,11 +25,10 @@ export class ServerService {
         'Cache-Control': 'no-cache',
       });
 
-      let i = 0;
-      setInterval(() => {
-        res.write(`data:${JSON.stringify({ image: `${++i}.png` })}`);
+      this.eventEmitter.on('image', (image) => {
+        res.write(`data:${JSON.stringify({ image })}`);
         res.write(`\n\n`);
-      }, 500);
+      });
     });
 
     app.listen(this.configService.port, () => {

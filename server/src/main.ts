@@ -7,8 +7,8 @@ import { ServerService } from './services/server.service';
 (async () => {
   const configService = new ConfigService();
   const logger = pino({ level: configService.logLevel });
-  const twitterService = new TwitterService(configService, logger);
   const serverService = new ServerService(configService, logger);
+  const twitterService = new TwitterService(configService, logger, serverService);
 
   logger.info('Starting up');
   if (configService.loadRules) {
@@ -16,9 +16,9 @@ import { ServerService } from './services/server.service';
     await twitterService.deleteRules(rules);
     await twitterService.setRules();
   }
-  // twitterService.flood();
-
   serverService.run();
+
+  twitterService.flood();
 })().catch((e) => {
   console.log(JSON.stringify(e));
 });
