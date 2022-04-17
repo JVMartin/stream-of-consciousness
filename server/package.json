@@ -2,9 +2,9 @@
   "name": "stream-of-consciousness",
   "version": "1.0.0",
   "description": "",
-  "main": "server/src/main.ts",
+  "main": "src/main.ts",
   "scripts": {
-    "start": "node -r ts-node/register -r dotenv/config server/src/main.ts",
+    "start": "node -r ts-node/register -r dotenv/config src/main.ts",
     "client": "vite"
   },
   "repository": {
