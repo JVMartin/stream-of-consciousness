@@ -27,7 +27,7 @@ export class ImageDtoCollectionService {
       return false;
     }
 
-    this.logger.trace(`Adding image ${image.url}`);
+    this.logger.trace(`Adding image ${image.url} (${this.queue.length + 1})`);
     this.map.set(image.url, true);
     this.queue.push(image);
   }

@@ -40,7 +40,7 @@ export class OrchestrationService {
 
       const image = this.imageCollectionService.remove();
       if (image) {
-        this.logger.info(`Emitting image ${image} (${this.imageCollectionService.size()} remaining)`);
+        this.logger.info(`Emitting image ${image.url} (${this.imageCollectionService.size()})`);
         this.serverService.imageEmitter.emit('image', image);
       }
     }, 1500);

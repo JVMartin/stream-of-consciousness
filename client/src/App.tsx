@@ -37,12 +37,18 @@ export default function App() {
     imageArea = <p>Waiting for first image...</p>;
   }
 
+  let pauseButton = null;
+  if (image && image.url.length) {
+    pauseButton =
+      <button onClick={buttonClick} className="mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        {paused ? 'Resume' : 'Pause'}
+      </button>
+  }
+
   return <div className="App">
     <section className="py-5">
       <div className="container mx-auto max-w-2xl flex items-center">
-        <button onClick={buttonClick} className="mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          {paused ? 'Resume' : 'Pause'}
-        </button>
+        {pauseButton}
       </div>
       <div className="py-5 container mx-auto max-w-2xl">
         <div>
