@@ -1,3 +1,5 @@
+import { Logger } from 'pino';
+
 export class ImageCollectionService {
   private static MAX_LENGTH: number = 500;
 
@@ -11,7 +13,7 @@ export class ImageCollectionService {
    */
   private readonly queue: string[];
 
-  constructor() {
+  constructor(private readonly logger: Logger) {
     this.map = new Map<string, boolean>();
     this.queue = [];
   }
@@ -24,6 +26,7 @@ export class ImageCollectionService {
       return false;
     }
 
+    this.logger.trace(`Adding image ${image}`);
     this.map.set(image, true);
     this.queue.push(image);
   }

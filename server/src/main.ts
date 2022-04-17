@@ -9,7 +9,7 @@ import { TwitterService } from './services/twitter.service';
 (async () => {
   const configService = new ConfigService();
   const logger = pino({ level: configService.logLevel });
-  const imageCollectionService = new ImageCollectionService();
+  const imageCollectionService = new ImageCollectionService(logger);
   const serverService = new ServerService(configService, logger);
   const twitterService = new TwitterService(configService, logger);
   const orchestrationService = new OrchestrationService(
