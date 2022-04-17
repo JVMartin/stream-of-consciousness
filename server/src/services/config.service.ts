@@ -4,6 +4,7 @@ type NodeEnv = 'production' | 'development' | 'test';
 
 const NODE_ENV = 'NODE_ENV';
 const LOG_LEVEL = 'LOG_LEVEL';
+const LOAD_RULES = 'LOAD_RULES';
 const TWITTER_BEARER_TOKEN = 'TWITTER_BEARER_TOKEN';
 
 export class ConfigService {
@@ -13,6 +14,8 @@ export class ConfigService {
    * The log level, application-wide.
    */
   public readonly logLevel: Level;
+
+  public readonly loadRules: boolean;
 
   public readonly twitterBearerToken: string;
 
@@ -44,6 +47,7 @@ export class ConfigService {
     } else {
       this.logLevel = 'info';
     }
+    this.loadRules = `${process.env[LOAD_RULES]}`.toLowerCase()[0] !== 'f';
 
     /**
      * -------------------------------------------------------------------------
