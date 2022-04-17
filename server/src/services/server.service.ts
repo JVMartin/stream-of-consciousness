@@ -22,7 +22,7 @@ export class ServerService {
 
       let i = 0;
       setInterval(() => {
-        res.write(JSON.stringify({ image: `${++i}.png` }));
+        res.write(`data:${JSON.stringify({ image: `${++i}.png` })}`);
         res.write(`\n\n`);
       }, 500);
     });
