@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export default function App() {
-  const [image, setImage] = useState('Image Placeholder :)');
+  const [image, setImage] = useState('');
 
   useEffect(() => {
     const eventSource = new EventSource(`http://localhost:8080/image`);
@@ -15,9 +15,18 @@ export default function App() {
     };
   }, [])
 
+  let imageArea;
+  if (image && image.length) {
+    imageArea = <img src={image} className="mx-auto" />;
+  } else {
+    imageArea = <p>Waiting for first image...</p>;
+  }
+
   return <div className="App">
-    <div>
-      <img src={image} />
-    </div>
+    <section className="py-5">
+      <div className="container mx-auto max-w-2xl">
+        {imageArea}
+      </div>
+    </section>
   </div>;
 }

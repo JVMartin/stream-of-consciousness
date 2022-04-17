@@ -9,6 +9,7 @@ const defineConfig: UserConfigFn = ({ command, mode }) => {
     server: {
       https: false,
     },
+    root: './src',
     plugins: [
       react(),
       tsconfigPaths(),

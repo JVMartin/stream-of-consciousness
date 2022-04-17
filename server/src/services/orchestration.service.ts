@@ -38,6 +38,6 @@ export class OrchestrationService {
         this.logger.info(`Emitting image ${image} (${this.imageCollectionService.size()} remaining)`);
         this.serverService.imageEmitter.emit('image', image);
       }
-    }, 2000);
+    }, 1000);
   }
 }
