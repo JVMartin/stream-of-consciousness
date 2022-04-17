@@ -38,7 +38,7 @@ export class TwitterService {
       {
         add: [
           {
-            value: 'ukraine has:images -is:retweet',
+            value: '(ukraine OR #ukraine OR #war) has:images -is:retweet',
           },
         ],
       },
